@@ -8,7 +8,7 @@ import java.sql.*;
 
 
 public class Util {
-    private static final String url = "jdbc:mysql://localhost/user_schema?useUnicode=true&serverTimezone=UTC&useSSL=true&verifyServerCertificate=false";
+    private static final String url = "jdbc:mysql://localhost/tables_users?useUnicode=true&serverTimezone=UTC&useSSL=true&verifyServerCertificate=false";
     private static final String userName = "root";
     private static final String pass = "1234";
     private static Connection connection;
