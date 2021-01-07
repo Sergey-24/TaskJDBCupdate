@@ -3,6 +3,8 @@ package jm.task.core.jdbc.util;
 
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.service.UserServiceImpl;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import java.sql.*;
 
@@ -37,6 +39,15 @@ public class Util {
 
 
     }
+
+    public static SessionFactory getfactory(){
+        return new Configuration()
+                .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(User.class)
+                .buildSessionFactory();
+    }
+
+
 
 
 }
