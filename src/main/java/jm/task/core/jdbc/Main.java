@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 public class Main {
         public static void main(String[] args) {
-                UserDao userDao = new UserDaoHibernateImpl();
+                UserDao userDao = new UserDaoJDBCImpl();
                 userDao.createUsersTable();
                 userDao.saveUser("Ivan", "Ivanov", (byte) 30);
                 userDao.saveUser("Anton", "Lavrov", (byte) 35);

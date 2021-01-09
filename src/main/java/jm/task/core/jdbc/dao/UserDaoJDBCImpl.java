@@ -6,6 +6,7 @@ import jm.task.core.jdbc.util.Util;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,15 +21,15 @@ public class UserDaoJDBCImpl implements UserDao {
                 "name varchar(50), lastName varchar (50), age int);";
         try {
             pr = Util.getConnect().prepareStatement(LINE_NEW);
-
             pr.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }
-        try {
-            Util.getConnect().close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } finally {
+            try {
+                Util.getConnect().close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
     }
 
@@ -39,18 +40,17 @@ public class UserDaoJDBCImpl implements UserDao {
             pr.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }
-        try {
-            Util.getConnect().close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } finally {
+            try {
+                Util.getConnect().close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
     }
 
-
     public void saveUser(String name, String lastName, byte age) {
         User user = new User(name, lastName, age);
-
         LINE_NEW = "INSERT INTO user(name, lastName, age) VALUES (?, ?, ?);";
         try {
             pr = Util.getConnect().prepareStatement(LINE_NEW);
@@ -61,11 +61,12 @@ public class UserDaoJDBCImpl implements UserDao {
             System.out.println("Пользователь с именем - " + name + " добавлен в базу данных");
         } catch (SQLException throwables) {
             System.out.println("Ошибка записи USER");
-        }
-        try {
-            Util.getConnect().close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } finally {
+            try {
+                Util.getConnect().close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
     }
 
@@ -73,34 +74,46 @@ public class UserDaoJDBCImpl implements UserDao {
         LINE_NEW = "DELETE FROM user WHERE id = " + id;
         try {
             pr = Util.getConnect().prepareStatement(LINE_NEW);
+            System.out.println("Пользователь с id = " + id + " удален" );
             pr.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }
-        try {
-            Util.getConnect().close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } finally {
+            try {
+                Util.getConnect().close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
     }
 
     public List<User> getAllUsers() {
-        User user = new User();
+        Statement statement = null;
+
         LINE_NEW = "SELECT * FROM user;";
         List<User> userList = new ArrayList<>();
         try {
-            pr = Util.getConnect().prepareStatement(LINE_NEW);
-            ResultSet resultSet = pr.executeQuery();
+            statement = Util.getConnect().createStatement();
+            ResultSet resultSet = statement.executeQuery(LINE_NEW);
             while (resultSet.next()) {
+                User user = new User();
                 user.setId(resultSet.getLong("id"));
                 user.setName(resultSet.getString("name"));
                 user.setLastName(resultSet.getString("lastName"));
                 user.setAge(resultSet.getByte("age"));
                 userList.add(user);
-                System.out.println(userList);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            try {
+                Util.getConnect().close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        for (User a: userList){
+            System.out.println(a);
         }
         return userList;
     }
@@ -119,6 +132,12 @@ public class UserDaoJDBCImpl implements UserDao {
             Util.getConnect().close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            try {
+                Util.getConnect().close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
     }
 }

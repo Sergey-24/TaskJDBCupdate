@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    UserDao userDao1 = new UserDaoHibernateImpl();
+    UserDao userDao1 = new UserDaoJDBCImpl();
 
     public void createUsersTable() {
         userDao1.createUsersTable();
