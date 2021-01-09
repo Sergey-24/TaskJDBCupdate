@@ -13,9 +13,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 public class Main {
-    public static void main(String[] args) {
-
-        UserDao userDao = new UserDaoHibernateImpl();
+        public static void main(String[] args) {
+                UserDao userDao = new UserDaoHibernateImpl();
                 userDao.createUsersTable();
                 userDao.saveUser("Ivan", "Ivanov", (byte) 30);
                 userDao.saveUser("Anton", "Lavrov", (byte) 35);
@@ -26,12 +25,5 @@ public class Main {
                 userDao.getAllUsers();
                 userDao.cleanUsersTable();
                 userDao.dropUsersTable();
-
-
-
-
-
-    }
-
-
+        }
 }
